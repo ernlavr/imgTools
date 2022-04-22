@@ -26,6 +26,6 @@ for file in os.listdir(INPUT_DIR):
       # replace extension
       pre, ext = os.path.splitext(file)
       
-      outputPath = os.path.join(OUTPUT_DIR, os.rename(file, pre + ".jpg"))
+      outputPath = os.path.join(OUTPUT_DIR, pre + str(count) + ".jpg")
       cv2.imwrite(outputPath, outputImg)     # save frame as JPEG file
-      print(f'Saved a new frame to {outputPath} {outputImg}')
+      print(f'Saved a new frame to {outputPath}')
