@@ -3,6 +3,7 @@ import re
 from os import walk
 import cv2
 
+import utils.utils
 
 imgFolder = "input/" # Required
 output = "output/" # Required
@@ -57,12 +58,13 @@ def main():
         os.remove(file.path)
 
     # Get all images from input
-    for (dirpath, dirnames, filenames) in walk(imgFolder):
-        imgs = filenames
+    imgs = utils.utils.getAllFiles(imgFolder)
     imgs.sort(key=natural_keys)
 
     # Crop and save loop
     for i in imgs:
+        if i.endswith(".gitignore"):
+            continue
         imgPath = imgFolder + i
         outputPath = output + i
         if(crop):
