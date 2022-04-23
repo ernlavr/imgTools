@@ -17,6 +17,9 @@ def getAllFiles(folder):
         output = list((Counter(filenames) - Counter(toIgnore)).elements())
         return output
 
+def getInputSubdirs(folder):
+    return [ f.path for f in os.scandir(folder) if f.is_dir() ]
+
 def clearFolder(folder):
     """
     Deletes all files in the given folder except list of filenames given in the exceptions
