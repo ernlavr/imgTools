@@ -1,6 +1,7 @@
 # Sorts strings by their numerical values if they contain numbers inside them
 import os.path
 import re
+import shutil
 from os import walk
 from collections import Counter
 
@@ -19,6 +20,12 @@ def getAllFiles(folder):
 
 def getInputSubdirs(folder):
     return [ f.path for f in os.scandir(folder) if f.is_dir() ]
+
+def remakeOutputSubdirs(folder):
+    # Clear the output
+    if (os.path.exists(folder) is True):
+        shutil.rmtree(folder)
+    os.mkdir(folder)
 
 def clearFolder(folder):
     """

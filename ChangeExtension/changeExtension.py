@@ -7,6 +7,7 @@ from utils.utils import *
 
 INPUT_DIR = "input/" # Required
 OUTPUT_DIR = "output/" # Required
+NEW_EXT = ".png"
 subdirs = getInputSubdirs(INPUT_DIR)
 
 for subdirName in subdirs:
@@ -19,9 +20,12 @@ for subdirName in subdirs:
 
         # Crop and save loop
         for index, file in enumerate(files):
-            # Get the source file and prepare the new name
+            # Get the source
             src = os.path.join(subdirName, file)
-            newName = f'{index:05d}.jpg'
-            dst = os.path.join(outputDir, newName)
-            # Copy
-            shutil.copyfile(src, dst)
+            img = cv2.imread(src)
+
+            # Beging changing and saving
+            name, ext = os.path.splitext(file)
+            fullName = name + NEW_EXT
+            img_output_path = os.path.join(outputDir, fullName)
+            responce = cv2.imwrite(img_output_path, img)

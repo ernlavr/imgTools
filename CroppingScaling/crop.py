@@ -3,10 +3,10 @@ import re
 from os import walk
 import cv2
 
-import utils.utils
+from utils.utils import *
 
-imgFolder = "input/" # Required
-output = "output/" # Required
+INPUT_DIR = "input/" # Required
+OUTPUT_DIR = "output/" # Required
 crop = False  # Crop or scale
 imgs = []
 
@@ -16,14 +16,6 @@ cropScalar = 2  # Scalar by which we crop
 
 # Scaling
 scalingPercentage = 50 # Scalar in percentage by which we scale
-
-# Sorts strings by their numerical values if they contain numbers inside them
-def atoi(text):
-    return int(text) if text.isdigit() else text
-
-def natural_keys(text):
-    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
-
 
 def scale(img : str):
     """
@@ -53,26 +45,27 @@ def crop(img : str):
         
 
 def main():
-    # Clear output directory
-    for file in os.scandir(output):
-        os.remove(file.path)
+    # Get all subdirectories in input
+    subdirs = getInputSubdirs(INPUT_DIR)
 
-    # Get all images from input
-    imgs = utils.utils.getAllFiles(imgFolder)
-    imgs.sort(key=natural_keys)
+    for subdirName in subdirs:
+        # Get all images from input
+        outputDir = subdirName.replace("input", "output")
+        remakeOutputSubdirs(outputDir)
 
-    # Crop and save loop
-    for i in imgs:
-        if i.endswith(".gitignore"):
-            continue
-        imgPath = imgFolder + i
-        outputPath = output + i
-        if(crop):
-            croppedImg = crop(imgPath)
-            cv2.imwrite(f'{outputPath}', croppedImg)
-        else: #scale
-            scaledImg = scale(imgPath)
-            cv2.imwrite(f'{outputPath}', scaledImg)
+        for subdirs, dirs, files in os.walk(subdirName):
+            files.sort(key=natural_keys)
+
+            # Crop and save loop
+            for i in files:
+                imgPath = os.path.join(subdirName, i)
+                outputPath = os.path.join(outputDir, i)
+                if(crop is True):
+                    croppedImg = crop(imgPath)
+                    cv2.imwrite(f'{outputPath}', croppedImg)
+                else: #scale
+                    scaledImg = scale(imgPath)
+                    cv2.imwrite(f'{outputPath}', scaledImg)
 
 if __name__ == "__main__":
     main()
