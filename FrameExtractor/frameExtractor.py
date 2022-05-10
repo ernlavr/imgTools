@@ -8,7 +8,7 @@ from utils.utils import *
 INPUT_DIR = "input/"
 OUTPUT_DIR = "output/"
 applyMedianFilter = True
-skipEveryImg = 10
+skipEveryImg = 150
 
 
 # Get all subdirectories in input
@@ -35,16 +35,15 @@ for subdirName in subdirs:
         if success is False:
           break
 
-        if(count % skipEveryImg == 0):  # skips every nTh img
-          outputImg = image
-          if(applyMedianFilter):
-            outputImg = cv2.medianBlur(image, 5) # Median filter
 
-          # replace extension
-          pre, ext = os.path.splitext(file)
+        outputImg = image
+        if(applyMedianFilter):
+          outputImg = cv2.medianBlur(image, 5) # Median filter
 
-          # Save to output
-          success, image = vidcap.read()
-          outputPath = os.path.join(outputDir, pre + str(count) + ".jpg")
-          cv2.imwrite(outputPath, outputImg)     # save frame as JPEG file
-          print(f'Saved a new frame to {outputPath}')
+        # replace extension
+        pre, ext = os.path.splitext(file)
+
+        # Save to output
+        outputPath = os.path.join(outputDir, pre + str(count) + ".jpg")
+        cv2.imwrite(outputPath, outputImg)     # save frame as JPEG file
+        print(f'Saved a new frame to {outputPath}')

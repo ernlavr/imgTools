@@ -7,11 +7,11 @@ from utils.utils import *
 
 INPUT_DIR = "input/" # Required
 OUTPUT_DIR = "output/" # Required
-crop = False  # Crop or scale
+cropImg = False  # Crop or scale
 imgs = []
 
 # Cropping
-centerCrop = False # Required for Cropping
+centerCrop = True # Required for Cropping
 cropScalar = 2  # Scalar by which we crop
 
 # Scaling
@@ -42,6 +42,12 @@ def crop(img : str):
         newHeight = int(height / cropScalar)
         newWidth = int(width / cropScalar)
         return img[0:newHeight, 0:newWidth]
+    else:
+        midWidth = width / 2
+        cropStartLeft = int(midWidth - height / 2)
+        cropEndRight = int(midWidth + height / 2)
+        return img[0:height, cropStartLeft:cropEndRight]
+
         
 
 def main():
@@ -57,15 +63,17 @@ def main():
             files.sort(key=natural_keys)
 
             # Crop and save loop
+            print("Cropping " + subdirName)
             for i in files:
                 imgPath = os.path.join(subdirName, i)
                 outputPath = os.path.join(outputDir, i)
-                if(crop is True):
+                if(cropImg == True):
                     croppedImg = crop(imgPath)
                     cv2.imwrite(f'{outputPath}', croppedImg)
                 else: #scale
                     scaledImg = scale(imgPath)
                     cv2.imwrite(f'{outputPath}', scaledImg)
+
 
 if __name__ == "__main__":
     main()
