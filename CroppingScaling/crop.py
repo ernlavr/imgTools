@@ -2,12 +2,18 @@ import os
 import re
 from os import walk
 import cv2
+import sys
+a = os.path.abspath(__file__)
+b = os.path.dirname(a)
+c = os.path.dirname(b)
+sys.path.append(c)
+
 
 from utils.utils import *
 
-INPUT_DIR = "input/" # Required
-OUTPUT_DIR = "output/" # Required
-cropImg = False  # Crop or scale
+INPUT_DIR = "CroppingScaling/input/" # Required
+OUTPUT_DIR = "CroppingScaling/output/" # Required
+cropImg = True  # Crop or scale
 imgs = []
 
 # Cropping
@@ -52,7 +58,7 @@ def crop(img : str):
 
 def main():
     # Get all subdirectories in input
-    subdirs = getInputSubdirs(INPUT_DIR)
+    subdirs = getInputSubdirs(os.path.abspath(INPUT_DIR))
 
     for subdirName in subdirs:
         # Get all images from input

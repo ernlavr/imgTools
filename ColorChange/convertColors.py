@@ -1,20 +1,25 @@
 import cv2
 import os
 import shutil
+import sys
 
+a = os.path.abspath(__file__)
+b = os.path.dirname(a)
+c = os.path.dirname(b)
+sys.path.append(c)
 
 from utils.utils import *
 
-INPUT_DIR = "input/"
+INPUT_DIR = "ColorChange/input/"
 OUTPUT_DIR = "output/"
 color = cv2.COLOR_BGR2RGB
 
 # Get all subdirectories in input
-subdirs = getInputSubdirs(INPUT_DIR)
+subdirs = getInputSubdirs(os.path.abspath(INPUT_DIR))
 
 for subdirName in subdirs:
   # Clear the output
-  outputDir = os.path.join(OUTPUT_DIR, subdirName).replace("input/", "")
+  outputDir = os.path.join(os.path.abspath(OUTPUT_DIR), subdirName).replace("input/", "")
   if(os.path.exists(outputDir) is True):
     shutil.rmtree(outputDir)
   os.mkdir(outputDir)
@@ -29,4 +34,3 @@ for subdirName in subdirs:
       im_rgb = cv2.cvtColor(img, color)
       dst = os.path.join(outputDir, file)
       cv2.imwrite(f'{dst}', im_rgb)
-    print(f"Done writing {subdirName}")

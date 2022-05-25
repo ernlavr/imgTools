@@ -1,22 +1,27 @@
 import cv2
 import os
 import shutil
+import sys
 
+a = os.path.abspath(__file__)
+b = os.path.dirname(a)
+c = os.path.dirname(b)
+sys.path.append(c)
 
 from utils.utils import *
 
-INPUT_DIR = "input/"
+INPUT_DIR = "FrameExtractor/input/"
 OUTPUT_DIR = "output/"
 applyMedianFilter = True
 skipEveryImg = 150
 
 
 # Get all subdirectories in input
-subdirs = getInputSubdirs(INPUT_DIR)
+subdirs = getInputSubdirs(os.path.abspath(INPUT_DIR))
 
 for subdirName in subdirs:
   # Clear the output
-  outputDir = os.path.join(OUTPUT_DIR, subdirName).replace("input/", "")
+  outputDir = subdirName.replace("input/", "output/")
   if(os.path.exists(outputDir) is True):
     shutil.rmtree(outputDir)
   os.mkdir(outputDir)

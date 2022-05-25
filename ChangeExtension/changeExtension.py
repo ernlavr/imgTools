@@ -3,12 +3,18 @@ import re
 from os import walk
 import cv2
 import shutil
+import sys
+a = os.path.abspath(__file__)
+b = os.path.dirname(a)
+c = os.path.dirname(b)
+sys.path.append(c)
+
 from utils.utils import *
 
-INPUT_DIR = "input/" # Required
-OUTPUT_DIR = "output/" # Required
-NEW_EXT = ".png"
-subdirs = getInputSubdirs(INPUT_DIR)
+INPUT_DIR = "ChangeExtension/input/" # Required
+OUTPUT_DIR = "ChangeExtension/output/" # Required
+NEW_EXT = ".jpg"
+subdirs = getInputSubdirs(os.path.abspath(INPUT_DIR))
 
 for subdirName in subdirs:
     # Get all images from input
@@ -28,4 +34,4 @@ for subdirName in subdirs:
             name, ext = os.path.splitext(file)
             fullName = name + NEW_EXT
             img_output_path = os.path.join(outputDir, fullName)
-            responce = cv2.imwrite(img_output_path, img)
+            cv2.imwrite(img_output_path, img, [cv2.IMWRITE_JPEG_QUALITY, 50])
